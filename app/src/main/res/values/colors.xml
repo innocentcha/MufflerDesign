@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#34a1e6</color>
+    <!--colorPrimary原来是#008577-->
+    <color name="colorPrimaryDark">#20618b</color>
+    <!--原来是#00574B-->
+    <color name="colorAccent">#D81B60</color>
+    <color name="Gray">#DCDCDC</color>
+    <color name="Red">#BE4B48</color>
+    <color name="Green">#98B954</color>
+    <color name="DeepBlue">#4A7EBB</color>
+    <color name="Blue">#1a94fc</color>
+    <color name="Black">#000000</color>
+    <color name="White">#00ffffff</color>
+</resources>
