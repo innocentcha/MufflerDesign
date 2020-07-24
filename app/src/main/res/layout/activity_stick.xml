@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_stick"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_scrollFlags="scroll|enterAlways|snap"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_stick"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <ScrollView
+            android:id="@+id/graphic_layout_stick"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_canvas_stick"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/attr_text_stick"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="5dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="16sp"
+                            android:gravity="center"
+                            android:text="插入管消声器"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="16sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="消声器类型"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="16sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="主管尺寸/mm"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="16sp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="单边插入长度"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="16sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="腔体尺寸/mm"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="16sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="容积/开槽面积"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="16sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="开槽面积/mm²"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="16sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="消声容积/L"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="16sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="温度/℃"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="16sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="峰值频率/Hz"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:textSize="16sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="插入方式示意图"/>
+                        <Button
+                            android:id="@+id/showAll_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center"
+                            android:text="显示图像"/>
+
+                        <Button
+                            android:id="@+id/showAdd_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center"
+                            android:text="显示求和"/>
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view_stick"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/saveContent_stick"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:gravity="center"
+                            android:text="插入管消声器"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="开槽面积/mm²"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="消声容积/L"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="温度/℃"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="峰值频率/Hz"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="单边插入长度/mm"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="插入方式"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/save1_stick"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/save_name1_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:textColor="#FF4A7EBB"
+                            android:gravity="center"
+                            android:text="消声器1"/>
+                        <TextView
+                            android:id="@+id/save_area1_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_devol1_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_degree1_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_peek1_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_length1_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+
+                        <ImageView
+                            android:id="@+id/save_type_pic1"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:scaleType="fitCenter"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/save2_stick"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/save_name2_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:textColor="#FFBE4B48"
+                            android:gravity="center"
+                            android:text="消声器2"/>
+                        <TextView
+                            android:id="@+id/save_area2_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_devol2_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_degree2_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_peek2_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_length2_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+
+                        <ImageView
+                            android:id="@+id/save_type_pic2"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:scaleType="fitCenter"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/save3_stick"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/save_name3_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:textColor="#FF98B954"
+                            android:gravity="center"
+                            android:text="消声器3"/>
+                        <TextView
+                            android:id="@+id/save_area3_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_devol3_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_degree3_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_peek3_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_length3_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+
+                        <ImageView
+                            android:id="@+id/save_type_pic3"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:scaleType="fitCenter"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/save4_stick"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/save_name4_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:textColor="#FF495A80"
+                            android:gravity="center"
+                            android:text="消声器4"/>
+                        <TextView
+                            android:id="@+id/save_area4_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_devol4_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_degree4_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_peek4_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_length4_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+
+                        <ImageView
+                            android:id="@+id/save_type_pic4"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:scaleType="fitCenter"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/save5_stick"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/save_name5_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:textColor="#FFFD5B78"
+                            android:gravity="center"
+                            android:text="消声器5"/>
+                        <TextView
+                            android:id="@+id/save_area5_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_devol5_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_degree5_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_peek5_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_length5_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+
+                        <ImageView
+                            android:id="@+id/save_type_pic5"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:scaleType="fitCenter"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/save6_stick"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/save_name6_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:textColor="#FF376956"
+                            android:gravity="center"
+                            android:text="消声器6"/>
+                        <TextView
+                            android:id="@+id/save_area6_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_devol6_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_degree6_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_peek6_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+                        <TextView
+                            android:id="@+id/save_length6_stick"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:textSize="10sp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center" />
+
+                        <ImageView
+                            android:id="@+id/save_type_pic6"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:scaleType="fitCenter"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp">
+                    <Button
+                        android:id="@+id/saveBt_stick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginTop="10dp"
+
+                        android:gravity="center"
+                        android:text="保存"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="180dp" >
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>
