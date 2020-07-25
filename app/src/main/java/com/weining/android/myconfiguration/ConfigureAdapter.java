@@ -2,7 +2,7 @@ package com.weining.android.myconfiguration;
 
 import android.content.SharedPreferences;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
 import com.weining.android.GraphicActivity;
 import com.weining.android.R;
 import com.weining.android.db.DataAll;

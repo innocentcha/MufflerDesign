@@ -7,7 +7,6 @@
         <mapping class="com.weining.android.db.Record"/>
         <mapping class="com.weining.android.db.DataAll"/>
         <mapping class="com.weining.android.db.DataStick"/>
-        <mapping class="com.weining.android.db.persons"/>
     </list>
 
 </litepal>
