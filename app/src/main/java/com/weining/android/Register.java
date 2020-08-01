@@ -267,7 +267,9 @@ public class Register extends AppCompatActivity {
     }
 
     private void queryFromServer(){
-        String url = "http://47.102.105.35/myAccount.json";
+        //https://www.weiningauto.xyz/myAccount.json
+        //https://47.102.105.35/myAccount.json
+        String url = "http://47.102.105.35/myAccount.json";//https://47.102.105.35/myAccount.json
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -395,7 +397,13 @@ public class Register extends AppCompatActivity {
 //    }
 
     private void requestData(){
-        String url = "http://47.102.105.35/android_connect_data/get_all_data.php";
+        String url = "https://www.weiningauto.xyz/android_connect_data/get_all_data.php";
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(), "请等待下载数据...", Toast.LENGTH_SHORT).show();
+            }
+        });
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -427,7 +435,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void requestStick(){
-        String url = "http://47.102.105.35/android_connect_dataStick/get_data_stick.php";
+        String url = "https://www.weiningauto.xyz/android_connect_dataStick/get_data_stick.php";
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
