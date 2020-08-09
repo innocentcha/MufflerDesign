@@ -14,7 +14,7 @@ public class DataStick extends LitePalSupport {
     private int maxF;
     private List<Float> tlList = new ArrayList<Float>();
 
-
+    //Getters and Setters below
     public int getDataId() {
         return dataId;
     }

@@ -67,7 +67,7 @@ public class Register extends AppCompatActivity {
 
     private int currentDay;
 
-    private String currentIMEI;
+    private String currentDeviceId;
 
     private String currentAccount;
 
@@ -91,10 +91,10 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         if(hasRequestPermissions()){
-            readIMEI();
+            readDeviceId();
             Log.d("haspermission","sa");
         }
-        readIMEI();
+        readDeviceId();
         Log.d("nothaspermission","sa");
 
         accountIn = (EditText) findViewById(R.id.account_in);
@@ -131,8 +131,6 @@ public class Register extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                registerSuccess();
-
                 currentAccount = accountIn.getText().toString();
                 currentPassword = passwordIn.getText().toString();
                 if(currentAccount.equals("试用")){
@@ -153,19 +151,17 @@ public class Register extends AppCompatActivity {
 
         });
 
-        List<DataAll>  myDataAll = LitePal.where("dataId = ?","1").find(DataAll.class);//加载速度快
-        Log.d("WangtingData",String.valueOf(myDataAll.size()));
-        //DataSupport.deleteAll(DataAll.class);
+        List<DataAll>  myDataAll = LitePal.where("dataId = ?","1").find(DataAll.class);
         if(myDataAll.size() == 0) {
             requestData();
         }
 
-        List<DataStick>  myDataStick = LitePal.where("dataId = ?","1").find(DataStick.class);//加载速度快
-//        List<DataStick>  myDataStick = LitePal.findAll(DataStick.class);//加载速度快
-        Log.d("WangtingStick",String.valueOf(myDataStick.size()));
+        List<DataStick>  myDataStick = LitePal.where("dataId = ?","1").find(DataStick.class);
         if(myDataStick.size() == 0) {
             requestStick();
         }
+
+        readDeviceId();
 
     }
 
@@ -209,9 +205,9 @@ public class Register extends AppCompatActivity {
         if(recordList.size() > 0){
             certify = false;
             for(Record record:recordList){
-                Log.d("tag111",currentIMEI);
+                Log.d("tag111",currentDeviceId);
                 Log.d("tag112",record.getPassword());
-                if(currentAccount.equals(record.getAccount()) && currentPassword.equals(record.getPassword()) && currentIMEI.equals(record.getIMEI())){
+                if(currentAccount.equals(record.getAccount()) && currentPassword.equals(record.getPassword()) && currentDeviceId.equals(record.getDeviceId())){
                     int year,month,day;
                     year = record.getYear();
                     month = record.getMonth();
@@ -235,7 +231,6 @@ public class Register extends AppCompatActivity {
             if (!certify){
                 Snackbar.make(findViewById(R.id.register_content),"该账户没有权限，请重新输入",Snackbar.LENGTH_SHORT).show();
                 passwordIn.setText("");
-                //Toast.makeText(getContext(),"该账户没有权限，请重新输入",Toast.LENGTH_SHORT).show();
             }
         }else{
             queryFromServer();
@@ -290,7 +285,7 @@ public class Register extends AppCompatActivity {
                             return;
                         }
                     }
-                    readIMEI();
+                    readDeviceId();
                 }else{
                     Toast.makeText(this,"发生未知错误",Toast.LENGTH_SHORT).show();
                     finish();
@@ -302,25 +297,22 @@ public class Register extends AppCompatActivity {
     }
 
     /**
-     * 获取手机IMEI号((International Mobile Equipment Identity,国际移动身份识别码)
+     * 获取手机deviceId, 会受到刷机的影响
+     * 无法获取IMEI号((International Mobile Equipment Identity,国际移动身份识别码)
+     * 原先使用的IMEI码在Android 10已不允许使用
      */
-    public void readIMEI(){
+    public void readDeviceId(){
         try{
 //            TelephonyManager TelephonyMgr=(TelephonyManager)getSystemService(TELEPHONY_SERVICE);
 //            currentIMEI =TelephonyMgr.getDeviceId();
-//            Log.d("myIMEi1",currentIMEI);
-//            if(TextUtils.isEmpty(currentIMEI)){
-//                currentIMEI = Settings.System.getString(
-//                       this.getContentResolver(), Settings.Secure.ANDROID_ID);
-//            }
-//            Log.d("myIMEi2",currentIMEI);
-            currentIMEI = Settings.System.getString(
+
+
+            currentDeviceId = Settings.System.getString(
                        this.getContentResolver(), Settings.Secure.ANDROID_ID);
-            Log.d("myIMEi2",currentIMEI);
+            Log.d("deviceId is ",currentDeviceId);
 
         }catch (SecurityException e){
             e.printStackTrace();
-            Log.d("myIMEi2failed","currentIMEI");
         }
     }
 
@@ -388,9 +380,7 @@ public class Register extends AppCompatActivity {
                     }
                 });
                 Log.d("requestData",responseText);
-                boolean result = false;
-                result = Utility.handleDataAllResponse(responseText);
-                //Toast.makeText(getContext(),String.valueOf(result),Toast.LENGTH_SHORT).show();
+                Utility.handleDataAllResponse(responseText);
             }
 
             @Override
@@ -413,15 +403,7 @@ public class Register extends AppCompatActivity {
                 Log.d("Stick","has web");
                 String responseText = response.body().string();
                 Log.d("Stick",responseText);
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(getContext(), "数据下载成功，请等待导入...", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-                boolean result = false;
-                result = Utility.handleDataStickResponse(responseText);
-                //Toast.makeText(getContext(),String.valueOf(result),Toast.LENGTH_SHORT).show();
+                Utility.handleDataStickResponse(responseText);
             }
 
             @Override

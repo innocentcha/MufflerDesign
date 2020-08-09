@@ -27,7 +27,7 @@ public class Utility {
                     Record record = new Record();
                     record.setAccount(recordObject.getString("account"));
                     record.setPassword(recordObject.getString("password"));
-                    record.setIMEI(recordObject.getString("IMEI"));
+                    record.setDeviceId(recordObject.getString("deviceId"));
                     record.setYear(recordObject.getInt("year"));
                     record.setMonth(recordObject.getInt("month"));
                     record.setDay(recordObject.getInt("day"));
@@ -86,7 +86,6 @@ public class Utility {
                 JSONArray allData = new JSONArray(response);
                 LitePal.deleteAll(DataStick.class);
                 for (int i = 0; i < allData.length(); i++) {
-                    //Log.d("Wangting before",String.valueOf(i));
                     JSONObject dataObject = allData.getJSONObject(i);
                     DataStick data = new DataStick();
                     List<Float> tlList = data.getTlList();
@@ -101,7 +100,6 @@ public class Utility {
                     }
                     data.setTlList(tlList);
                     data.save();
-                    //Log.d("Wangting save",String.valueOf(i));
                 }
                 return true;
             } catch (JSONException e) {
