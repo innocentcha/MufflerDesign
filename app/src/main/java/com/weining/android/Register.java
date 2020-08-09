@@ -15,16 +15,16 @@ import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.SpannedString;
-import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.view.View;
-import android.telephony.TelephonyManager;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -61,6 +61,8 @@ public class Register extends AppCompatActivity {
 
     private Button login;
 
+    private Button showDeviceId;
+
     private int currentYear;
 
     private int currentMonth;
@@ -94,22 +96,13 @@ public class Register extends AppCompatActivity {
             readDeviceId();
             Log.d("haspermission","sa");
         }
+
         readDeviceId();
         Log.d("nothaspermission","sa");
 
-        accountIn = (EditText) findViewById(R.id.account_in);
-        passwordIn = (EditText) findViewById(R.id.password_in);
-        login = (Button) findViewById(R.id.login);
-        rememberPass = (CheckBox) findViewById(R.id.remember_password);
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        initView();
 
-        //设置账号密码输入框的hint
-        accountIn.setTag("账号");//预先设置Tag作为hint的值
-        mySetHint(accountIn);
-        passwordIn.setTag("密码");
-        mySetHint(passwordIn);
-        accountIn.setOnFocusChangeListener(onFocusChangeListener);
-        passwordIn.setOnFocusChangeListener(onFocusChangeListener);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         //设置账号密码保存值
         boolean isRemember = pref.getBoolean("remember_password",false);
@@ -127,29 +120,6 @@ public class Register extends AppCompatActivity {
         currentMonth = calendar.get(Calendar.MONTH)+1;
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        //设置登录按钮的按击事件
-        login.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                currentAccount = accountIn.getText().toString();
-                currentPassword = passwordIn.getText().toString();
-                if(currentAccount.equals("试用")){
-                       betaRecord();
-                }else{
-                    if("".equals(currentAccount)){
-                        Toast.makeText(getContext(),"请输入账号",Toast.LENGTH_SHORT).show();
-                        accountIn.requestFocus();//获取光标位置
-                    }else if("".equals(currentPassword)){
-                        Toast.makeText(getContext(),"请输入密码",Toast.LENGTH_SHORT).show();
-                        passwordIn.requestFocus();//获取光标位置
-                    }else{
-                        hasUpdate = false;
-                        queryRecord();
-                    }
-                }
-            }
-
-        });
 
         List<DataAll>  myDataAll = LitePal.where("dataId = ?","1").find(DataAll.class);
         if(myDataAll.size() == 0) {
@@ -160,8 +130,6 @@ public class Register extends AppCompatActivity {
         if(myDataStick.size() == 0) {
             requestStick();
         }
-
-        readDeviceId();
 
     }
 
@@ -182,6 +150,68 @@ public class Register extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void initView(){
+        accountIn = (EditText) findViewById(R.id.account_in);
+        passwordIn = (EditText) findViewById(R.id.password_in);
+        login = (Button) findViewById(R.id.login);
+        rememberPass = (CheckBox) findViewById(R.id.remember_password);
+        showDeviceId = (Button) findViewById(R.id.show_deviceId);
+
+        designInput();
+
+        //设置登录按钮的按击事件
+        login.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                currentAccount = accountIn.getText().toString();
+                currentPassword = passwordIn.getText().toString();
+                if(currentAccount.equals("试用")){
+                    betaRecord();
+                }else{
+                    if("".equals(currentAccount)){
+                        Toast.makeText(getContext(),"请输入账号",Toast.LENGTH_SHORT).show();
+                        accountIn.requestFocus();//获取光标位置
+                    }else if("".equals(currentPassword)){
+                        Toast.makeText(getContext(),"请输入密码",Toast.LENGTH_SHORT).show();
+                        passwordIn.requestFocus();//获取光标位置
+                    }else{
+                        hasUpdate = false;
+                        queryRecord();
+                    }
+                }
+            }
+
+        });
+
+        showDeviceId.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showDeviceId.setText(currentDeviceId);
+                        AlertDialog showDeviceIdDialog = new AlertDialog.Builder(getContext())
+                                .setTitle("申请权限")
+                                .setMessage("请将您的密钥发送给管理员\n密钥： " + currentDeviceId)
+                                .setIcon(R.mipmap.ic_launcher)
+                                .create();
+//                        showDeviceIdDialog.show();
+                    }
+                });
+            }
+        });
+    }
+
+    private void designInput(){
+        //设置账号密码输入框的hint
+        accountIn.setTag("账号");//预先设置Tag作为hint的值
+        mySetHint(accountIn);
+        passwordIn.setTag("密码");
+        mySetHint(passwordIn);
+        accountIn.setOnFocusChangeListener(onFocusChangeListener);
+        passwordIn.setOnFocusChangeListener(onFocusChangeListener);
     }
 
     private void betaRecord(){
