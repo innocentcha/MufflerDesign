@@ -5,14 +5,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
-//import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
-import com.weining.android.db.DataAll;
 
 
 public class ChooseOne extends AppCompatActivity implements View.OnClickListener{
@@ -44,32 +40,29 @@ public class ChooseOne extends AppCompatActivity implements View.OnClickListener
         if(isBeta) charu.setVisibility(View.INVISIBLE);
     }
 
-    public void onClick(View view){
-        Intent intent;
-        switch (view.getId()){
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.choose_one_chuankong:
-                if(isBeta){
-                    intent=new Intent(this, BetaActivity.class);
-                    startActivity(intent);
-                    finish();
-                }else{
-                    intent=new Intent(this, GraphicActivity.class);
-                    startActivity(intent);
-                    finish();
+                if (isBeta) {
+                    startNewActivity(BetaActivity.class);
+                } else {
+                    startNewActivity(GraphicActivity.class);
                 }
                 break;
             case R.id.choose_one_simple:
-                intent=new Intent(this, SimpleChoose.class);
-                startActivity(intent);
-                finish();
+                startNewActivity(SimpleChoose.class);
                 break;
             case R.id.choose_one_charu:
-                intent=new Intent(this, StickActivity.class);
-                startActivity(intent);
-                finish();
+                startNewActivity(StickActivity.class);
                 break;
             default:
         }
+    }
+
+    private void startNewActivity(Class<?> cls) {
+        Intent intent = new Intent(this, cls);
+        startActivity(intent);
+        finish();
     }
 
 }

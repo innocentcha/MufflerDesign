@@ -10,14 +10,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
-//import android.support.design.widget.Snackbar;
-//import android.support.v4.app.ActivityCompat;
-//import android.support.v4.content.ContextCompat;
-//import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.SpannedString;
+import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.view.View;
@@ -92,22 +90,12 @@ public class Register extends AppCompatActivity {
         }
         setContentView(R.layout.activity_register);
 
-        List<String> permissionList = new ArrayList<>();
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_PHONE_STATE)!= PackageManager.PERMISSION_GRANTED){
-            permissionList.add(Manifest.permission.READ_PHONE_STATE);
-        }
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALENDAR)!= PackageManager.PERMISSION_GRANTED){
-            permissionList.add(Manifest.permission.READ_CALENDAR);
-        }
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.INTERNET)!= PackageManager.PERMISSION_GRANTED){
-            permissionList.add(Manifest.permission.INTERNET);
-        }
-        if(!permissionList.isEmpty()){
-            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(Register.this,permissions,1);
-        }else{
+        if(hasRequestPermissions()){
             readIMEI();
+            Log.d("haspermission","sa");
         }
+        readIMEI();
+        Log.d("nothaspermission","sa");
 
         accountIn = (EditText) findViewById(R.id.account_in);
         passwordIn = (EditText) findViewById(R.id.password_in);
@@ -143,15 +131,17 @@ public class Register extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                registerSuccess();
+
                 currentAccount = accountIn.getText().toString();
                 currentPassword = passwordIn.getText().toString();
                 if(currentAccount.equals("试用")){
                        betaRecord();
                 }else{
-                    if(currentAccount.equals("")){
+                    if("".equals(currentAccount)){
                         Toast.makeText(getContext(),"请输入账号",Toast.LENGTH_SHORT).show();
                         accountIn.requestFocus();//获取光标位置
-                    }else if(currentPassword.equals("")){
+                    }else if("".equals(currentPassword)){
                         Toast.makeText(getContext(),"请输入密码",Toast.LENGTH_SHORT).show();
                         passwordIn.requestFocus();//获取光标位置
                     }else{
@@ -177,39 +167,25 @@ public class Register extends AppCompatActivity {
             requestStick();
         }
 
-//        for(DataAll data:myDataAll){
-//////            Log.d("Wangting","data id is"+String.valueOf(data.getDataId()));
-////            if(data.getDataId() == 1910){
-////                Log.d("Wangting","data id is"+String.valueOf(data.getDataId()));
-////                Log.d("Wangting","data type is"+String.valueOf(data.getDataType()));
-////                Log.d("Wangting","data axial is"+String.valueOf(data.getDataAxial()));
-////                Log.d("Wangting","data vol is"+String.valueOf(data.getDataVol()));
-////                Log.d("Wangting","data f200"+" is "+String.valueOf(data.getF200()));
-////                Log.d("Wangting","data f250"+" is "+String.valueOf(data.getF250()));
-////                Log.d("Wangting","data f7980"+" is "+String.valueOf(data.getF7980()));
-////
-//////                for(int i=1900; i<1914; i++){
-//////                    Log.d("Wangting","data "+i+" is "+String.valueOf(data.f[i]));
-//////                }
-////            }
-////
-////        }
+    }
 
-//        for(DataStick data:myDataStick){
-//            if(data.getDataId() == 100){
-//                Log.d("Stick","data id is"+String.valueOf(data.getDataId()));
-//                Log.d("Stick","data type is"+String.valueOf(data.getDataType()));
-//                Log.d("Stick","data length is"+String.valueOf(data.getDataLength()));
-//                Log.d("Stick","data f200"+" is "+String.valueOf(data.getF200()));
-//                Log.d("Stick","data f250"+" is "+String.valueOf(data.getF250()));
-//                Log.d("Stick","data f7980"+" is "+String.valueOf(data.getF7980()));
-//            }
-//
-//        }
-
-
-
-
+    private boolean hasRequestPermissions(){
+        List<String> permissionList = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_PHONE_STATE)!= PackageManager.PERMISSION_GRANTED){
+            permissionList.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALENDAR)!= PackageManager.PERMISSION_GRANTED){
+            permissionList.add(Manifest.permission.READ_CALENDAR);
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.INTERNET)!= PackageManager.PERMISSION_GRANTED){
+            permissionList.add(Manifest.permission.INTERNET);
+        }
+        if(!permissionList.isEmpty()){
+            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
+            ActivityCompat.requestPermissions(Register.this,permissions,1);
+            return false;
+        }
+        return true;
     }
 
     private void betaRecord(){
@@ -233,6 +209,8 @@ public class Register extends AppCompatActivity {
         if(recordList.size() > 0){
             certify = false;
             for(Record record:recordList){
+                Log.d("tag111",currentIMEI);
+                Log.d("tag112",record.getPassword());
                 if(currentAccount.equals(record.getAccount()) && currentPassword.equals(record.getPassword()) && currentIMEI.equals(record.getIMEI())){
                     int year,month,day;
                     year = record.getYear();
@@ -250,9 +228,7 @@ public class Register extends AppCompatActivity {
                         editor.putBoolean("isBeta",false);
                         editor.apply();
                         certify = true;
-                        Intent intent = new Intent(Register.this,ChooseOne.class);
-                        startActivity(intent);
-                        finish();
+                        registerSuccess();
                     }
                 }
             }
@@ -266,10 +242,14 @@ public class Register extends AppCompatActivity {
         }
     }
 
+    private void registerSuccess(){
+        Intent intent = new Intent(Register.this,ChooseOne.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void queryFromServer(){
-        //https://www.weiningauto.xyz/myAccount.json
-        //https://47.102.105.35/myAccount.json
-        String url = "http://47.102.105.35/myAccount.json";//https://47.102.105.35/myAccount.json
+        String url = "https://www.weiningauto.xyz/myAccount.json";//47.102.105.35
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -321,12 +301,26 @@ public class Register extends AppCompatActivity {
         }
     }
 
+    /**
+     * 获取手机IMEI号((International Mobile Equipment Identity,国际移动身份识别码)
+     */
     public void readIMEI(){
         try{
-            TelephonyManager TelephonyMgr=(TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-            currentIMEI =TelephonyMgr.getDeviceId();
+//            TelephonyManager TelephonyMgr=(TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+//            currentIMEI =TelephonyMgr.getDeviceId();
+//            Log.d("myIMEi1",currentIMEI);
+//            if(TextUtils.isEmpty(currentIMEI)){
+//                currentIMEI = Settings.System.getString(
+//                       this.getContentResolver(), Settings.Secure.ANDROID_ID);
+//            }
+//            Log.d("myIMEi2",currentIMEI);
+            currentIMEI = Settings.System.getString(
+                       this.getContentResolver(), Settings.Secure.ANDROID_ID);
+            Log.d("myIMEi2",currentIMEI);
+
         }catch (SecurityException e){
             e.printStackTrace();
+            Log.d("myIMEi2failed","currentIMEI");
         }
     }
 
@@ -373,29 +367,6 @@ public class Register extends AppCompatActivity {
         return true;
     }
 
-//    private void requestPersons(){
-//        String url = "http://47.102.105.35/android_connect/get_all_persons.php";
-//        HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                Log.d("Wangting","has web");
-//                String responseText = response.body().string();
-//                boolean result = false;
-//                result = Utility.handlePersonResponse(responseText);
-//            }
-//
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(getContext(), "更新源数据失败", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            }
-//        });
-//    }
-
     private void requestData(){
         String url = "https://www.weiningauto.xyz/android_connect_data/get_all_data.php";
         runOnUiThread(new Runnable() {
@@ -407,16 +378,16 @@ public class Register extends AppCompatActivity {
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d("Wangting","has web");
+                Log.d("requestData","has web");
                 String responseText = response.body().string();
-                Log.d("Wangting",responseText);
+                Log.d("requestData",responseText);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getContext(), "数据下载成功，请等待导入...", Toast.LENGTH_SHORT).show();
                     }
                 });
-                Log.d("Wangting",responseText);
+                Log.d("requestData",responseText);
                 boolean result = false;
                 result = Utility.handleDataAllResponse(responseText);
                 //Toast.makeText(getContext(),String.valueOf(result),Toast.LENGTH_SHORT).show();
@@ -427,7 +398,7 @@ public class Register extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getContext(), "更新源数据失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "更新源数据失败 requestData", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
