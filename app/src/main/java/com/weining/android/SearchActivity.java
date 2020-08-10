@@ -3,28 +3,17 @@ package com.weining.android;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.os.Build;
-import android.preference.PreferenceManager;
-//import android.support.v4.widget.SwipeRefreshLayout;
-//import android.support.v7.app.ActionBar;
-//import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-//import android.support.v7.widgetdget.LinearLayoutManager;
-//import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-//import android.support.v7.widget.Toolbar;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,22 +32,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.weining.android.db.DataAll;
 import com.weining.android.myconfiguration.Configure;
-import com.weining.android.myconfiguration.ConfigureAdapter;
 import com.weining.android.myconfiguration.SearchConfigureAdapter;
 
 import com.weining.android.util.CountUtil;
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.litepal.LitePalApplication.getContext;
 
 public class SearchActivity extends AppCompatActivity {
-
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
 
     private Button changeTL;
 

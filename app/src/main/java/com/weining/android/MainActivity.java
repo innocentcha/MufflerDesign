@@ -18,8 +18,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent=new Intent(this, Register.class);
         startActivity(intent);
         finish();
-//        Intent intent=new Intent(this, GraphicActivity.class);
-//        startActivity(intent);
-//        finish();
     }
 }

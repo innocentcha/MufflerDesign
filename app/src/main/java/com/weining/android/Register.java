@@ -62,6 +62,8 @@ public class Register extends AppCompatActivity {
 
     private Button login;
 
+    private TextView useBeta;
+
     private TextView showDeviceKey;
 
     private int currentYear;
@@ -140,6 +142,7 @@ public class Register extends AppCompatActivity {
         passwordIn = findViewById(R.id.password_in);
         login = findViewById(R.id.login);
         rememberPass = findViewById(R.id.remember_password);
+        useBeta = findViewById(R.id.use_beta);
         showDeviceKey = findViewById(R.id.show_deviceKey);
 
         designInput();
@@ -150,22 +153,28 @@ public class Register extends AppCompatActivity {
             public void onClick(View v){
                 currentAccount = accountIn.getText().toString();
                 currentPassword = passwordIn.getText().toString();
-                if(currentAccount.equals("试用")){
-                    betaRecord();
+                if("".equals(currentAccount)){
+                    Toast.makeText(getContext(),"请输入账号",Toast.LENGTH_SHORT).show();
+                    accountIn.requestFocus();//获取光标位置
+                }else if("".equals(currentPassword)){
+                    Toast.makeText(getContext(),"请输入密码",Toast.LENGTH_SHORT).show();
+                    passwordIn.requestFocus();//获取光标位置
                 }else{
-                    if("".equals(currentAccount)){
-                        Toast.makeText(getContext(),"请输入账号",Toast.LENGTH_SHORT).show();
-                        accountIn.requestFocus();//获取光标位置
-                    }else if("".equals(currentPassword)){
-                        Toast.makeText(getContext(),"请输入密码",Toast.LENGTH_SHORT).show();
-                        passwordIn.requestFocus();//获取光标位置
-                    }else{
-                        hasUpdate = false;
-                        queryRecord();
-                    }
+                    hasUpdate = false;
+                    queryRecord();
                 }
             }
 
+        });
+
+        useBeta.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editor = pref.edit();
+                editor.putBoolean("isBeta", true);
+                editor.apply();
+                registerSuccess();
+            }
         });
 
         showDeviceKey.setOnClickListener(new OnClickListener() {
@@ -210,16 +219,6 @@ public class Register extends AppCompatActivity {
         passwordIn.setOnFocusChangeListener(onFocusChangeListener);
     }
 
-    private void betaRecord() {
-        editor = pref.edit();
-        editor.putBoolean("isBeta", true);
-        editor.putBoolean("remember_password", false);
-        editor.apply();
-        Intent intent = new Intent(Register.this, ChooseOne.class);
-        startActivity(intent);
-        finish();
-    }
-
     private void queryRecord(){
         recordList = LitePal.findAll(Record.class);
         if(!hasUpdate && Build.VERSION.SDK_INT>=21){
@@ -246,6 +245,7 @@ public class Register extends AppCompatActivity {
                         }else{
                             editor.putBoolean("remember_password",false);
                         }
+                        editor.putBoolean("isBeta", false);
                         editor.apply();
                         certify = true;
                         registerSuccess();
