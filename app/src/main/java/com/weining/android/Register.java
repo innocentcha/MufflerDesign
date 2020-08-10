@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog.Builder;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -170,7 +171,10 @@ public class Register extends AppCompatActivity {
         showDeviceKey.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("deviceKeyIs:",currentDeviceKey);
+                AlertDialog.Builder dialog = new Builder(Register.this);
+                dialog.setTitle("许可")
+                        .setMessage("您的密钥为：" + currentDeviceKey + "\n请向管理员申请权限")
+                        .show();
             }
         });
     }
@@ -196,7 +200,7 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    private void designInput(){
+    private void designInput() {
         //设置账号密码输入框的hint
         accountIn.setTag("账号");//预先设置Tag作为hint的值
         mySetHint(accountIn);
@@ -206,12 +210,12 @@ public class Register extends AppCompatActivity {
         passwordIn.setOnFocusChangeListener(onFocusChangeListener);
     }
 
-    private void betaRecord(){
+    private void betaRecord() {
         editor = pref.edit();
-        editor.putBoolean("isBeta",true);
-        editor.putBoolean("remember_password",false);
+        editor.putBoolean("isBeta", true);
+        editor.putBoolean("remember_password", false);
         editor.apply();
-        Intent intent = new Intent(Register.this,ChooseOne.class);
+        Intent intent = new Intent(Register.this, ChooseOne.class);
         startActivity(intent);
         finish();
     }
