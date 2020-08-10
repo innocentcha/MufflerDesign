@@ -61,7 +61,7 @@ public class Register extends AppCompatActivity {
 
     private Button login;
 
-    private Button showDeviceId;
+    private Button showDeviceKey;
 
     private int currentYear;
 
@@ -69,7 +69,7 @@ public class Register extends AppCompatActivity {
 
     private int currentDay;
 
-    private String currentDeviceId;
+    private String currentDeviceKey;
 
     private String currentAccount;
 
@@ -92,27 +92,11 @@ public class Register extends AppCompatActivity {
         }
         setContentView(R.layout.activity_register);
 
-        if(hasRequestPermissions()){
-            readDeviceId();
-            Log.d("haspermission","sa");
-        }
-
-        readDeviceId();
-        Log.d("nothaspermission","sa");
+        requestPermissions();
 
         initView();
 
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
-
-        //设置账号密码保存值
-        boolean isRemember = pref.getBoolean("remember_password",false);
-        if(isRemember){
-            String storeAccount = pref.getString("account","");
-            String storePassword = pref.getString("password","");
-            accountIn.setText(storeAccount);
-            passwordIn.setText(storePassword);
-            rememberPass.setChecked(true);
-        }
+        initPref();
 
         //获取系统时间
         Calendar calendar= Calendar.getInstance();
@@ -133,7 +117,7 @@ public class Register extends AppCompatActivity {
 
     }
 
-    private boolean hasRequestPermissions(){
+    private void requestPermissions(){
         List<String> permissionList = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_PHONE_STATE)!= PackageManager.PERMISSION_GRANTED){
             permissionList.add(Manifest.permission.READ_PHONE_STATE);
@@ -147,17 +131,15 @@ public class Register extends AppCompatActivity {
         if(!permissionList.isEmpty()){
             String[] permissions = permissionList.toArray(new String[permissionList.size()]);
             ActivityCompat.requestPermissions(Register.this,permissions,1);
-            return false;
         }
-        return true;
     }
 
     private void initView(){
-        accountIn = (EditText) findViewById(R.id.account_in);
-        passwordIn = (EditText) findViewById(R.id.password_in);
-        login = (Button) findViewById(R.id.login);
-        rememberPass = (CheckBox) findViewById(R.id.remember_password);
-        showDeviceId = (Button) findViewById(R.id.show_deviceId);
+        accountIn = findViewById(R.id.account_in);
+        passwordIn = findViewById(R.id.password_in);
+        login = findViewById(R.id.login);
+        rememberPass = findViewById(R.id.remember_password);
+        showDeviceKey = findViewById(R.id.show_deviceKey);
 
         designInput();
 
@@ -185,23 +167,33 @@ public class Register extends AppCompatActivity {
 
         });
 
-        showDeviceId.setOnClickListener(new OnClickListener() {
+        showDeviceKey.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showDeviceId.setText(currentDeviceId);
-                        AlertDialog showDeviceIdDialog = new AlertDialog.Builder(getContext())
-                                .setTitle("申请权限")
-                                .setMessage("请将您的密钥发送给管理员\n密钥： " + currentDeviceId)
-                                .setIcon(R.mipmap.ic_launcher)
-                                .create();
-//                        showDeviceIdDialog.show();
-                    }
-                });
+                Log.d("deviceKeyIs:",currentDeviceKey);
             }
         });
+    }
+
+    private void initPref() {
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        //设置账号密码保存值
+        boolean isRemember = pref.getBoolean("remember_password", false);
+        if (isRemember) {
+            String storeAccount = pref.getString("account", "");
+            String storePassword = pref.getString("password", "");
+            accountIn.setText(storeAccount);
+            passwordIn.setText(storePassword);
+            rememberPass.setChecked(true);
+        }
+        currentDeviceKey = pref.getString("deviceKey", "");
+        if ("".equals(currentDeviceKey)) {
+            editor = pref.edit();
+            currentDeviceKey = generateDeviceKey();
+            editor.putString("deviceKey", currentDeviceKey);
+            editor.apply();
+        }
     }
 
     private void designInput(){
@@ -235,9 +227,8 @@ public class Register extends AppCompatActivity {
         if(recordList.size() > 0){
             certify = false;
             for(Record record:recordList){
-                Log.d("tag111",currentDeviceId);
-                Log.d("tag112",record.getPassword());
-                if(currentAccount.equals(record.getAccount()) && currentPassword.equals(record.getPassword()) && currentDeviceId.equals(record.getDeviceId())){
+                if(currentAccount.equals(record.getAccount()) && currentPassword.equals(record.getPassword()) && currentDeviceKey
+                        .equals(record.getDeviceKey())){
                     int year,month,day;
                     year = record.getYear();
                     month = record.getMonth();
@@ -251,7 +242,6 @@ public class Register extends AppCompatActivity {
                         }else{
                             editor.putBoolean("remember_password",false);
                         }
-                        editor.putBoolean("isBeta",false);
                         editor.apply();
                         certify = true;
                         registerSuccess();
@@ -274,7 +264,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void queryFromServer(){
-        String url = "https://www.weiningauto.xyz/myAccount.json";//47.102.105.35
+        String url = "https://www.weiningauto.xyz/myAccount1.json";//47.102.105.35
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -315,7 +305,6 @@ public class Register extends AppCompatActivity {
                             return;
                         }
                     }
-                    readDeviceId();
                 }else{
                     Toast.makeText(this,"发生未知错误",Toast.LENGTH_SHORT).show();
                     finish();
@@ -327,23 +316,20 @@ public class Register extends AppCompatActivity {
     }
 
     /**
-     * 获取手机deviceId, 会受到刷机的影响
+     * 使用随机生成的十位字符串作为密钥
+     * 无法使用手机deviceId, 老是会变
      * 无法获取IMEI号((International Mobile Equipment Identity,国际移动身份识别码)
      * 原先使用的IMEI码在Android 10已不允许使用
      */
-    public void readDeviceId(){
-        try{
-//            TelephonyManager TelephonyMgr=(TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-//            currentIMEI =TelephonyMgr.getDeviceId();
-
-
-            currentDeviceId = Settings.System.getString(
-                       this.getContentResolver(), Settings.Secure.ANDROID_ID);
-            Log.d("deviceId is ",currentDeviceId);
-
-        }catch (SecurityException e){
-            e.printStackTrace();
+    private String generateDeviceKey() {
+        String originalStr = "00112233445566778899abcdefghijklmnopqrstuvwxyz";
+        int length = originalStr.length();
+        StringBuilder randomKey = new StringBuilder();
+        for (int i = 0; i < 10; i++) {
+            int rand = (int) (Math.random() * length);
+            randomKey.append(originalStr.charAt(rand));
         }
+        return randomKey.toString();
     }
 
     private View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
@@ -383,10 +369,7 @@ public class Register extends AppCompatActivity {
         ConnectivityManager manager=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(manager==null) return false;
         NetworkInfo networkInfo=manager.getActiveNetworkInfo();
-        if(networkInfo==null||!networkInfo.isAvailable()){
-            return false;
-        }
-        return true;
+        return networkInfo != null && networkInfo.isAvailable();
     }
 
     private void requestData(){

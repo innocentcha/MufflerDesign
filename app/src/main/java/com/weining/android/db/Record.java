@@ -6,7 +6,7 @@ public class Record extends LitePalSupport {
 
     private String account;
     private String password;
-    private String deviceId;
+    private String deviceKey;
     private int year;
     private int month;
     private int day;
@@ -28,12 +28,12 @@ public class Record extends LitePalSupport {
         this.password = password;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getDeviceKey() {
+        return deviceKey;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setDeviceKey(String deviceKey) {
+        this.deviceKey = deviceKey;
     }
 
     public int getYear() {

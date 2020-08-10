@@ -14,4 +14,11 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+//    @Test
+//    public void testRandomKey() {
+//        for (int i=0; i<20; i++){
+//            System.out.println(i+":    "+Register.generateRandomKey());
+//        }
+//    }
 }

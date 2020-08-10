@@ -1,8 +1,6 @@
 package com.weining.android.util;
 
 import android.text.TextUtils;
-import android.util.Log;
-import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +25,7 @@ public class Utility {
                     Record record = new Record();
                     record.setAccount(recordObject.getString("account"));
                     record.setPassword(recordObject.getString("password"));
-                    record.setDeviceId(recordObject.getString("deviceId"));
+                    record.setDeviceKey(recordObject.getString("deviceKey"));
                     record.setYear(recordObject.getInt("year"));
                     record.setMonth(recordObject.getInt("month"));
                     record.setDay(recordObject.getInt("day"));
