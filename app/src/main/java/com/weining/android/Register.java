@@ -1,6 +1,7 @@
 package com.weining.android;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -84,6 +85,12 @@ public class Register extends AppCompatActivity {
 
     private Boolean hasUpdate;
 
+    private Boolean hasLogged;
+
+    private ProgressDialog progressDialog;
+
+    private int successCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,42 +109,34 @@ public class Register extends AppCompatActivity {
         initPref();
 
         //获取系统时间
-        Calendar calendar= Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         currentYear = calendar.get(Calendar.YEAR);
-        currentMonth = calendar.get(Calendar.MONTH)+1;
+        currentMonth = calendar.get(Calendar.MONTH) + 1;
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-
-        List<DataAll>  myDataAll = LitePal.where("dataId = ?","1").find(DataAll.class);
-        if(myDataAll.size() == 0) {
-            requestData();
-        }
-
-        List<DataStick>  myDataStick = LitePal.where("dataId = ?","1").find(DataStick.class);
-        if(myDataStick.size() == 0) {
-            requestStick();
-        }
-
     }
 
-    private void requestPermissions(){
+    private void requestPermissions() {
         List<String> permissionList = new ArrayList<>();
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_PHONE_STATE)!= PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
             permissionList.add(Manifest.permission.READ_PHONE_STATE);
         }
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALENDAR)!= PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CALENDAR)
+                != PackageManager.PERMISSION_GRANTED) {
             permissionList.add(Manifest.permission.READ_CALENDAR);
         }
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.INTERNET)!= PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED) {
             permissionList.add(Manifest.permission.INTERNET);
         }
-        if(!permissionList.isEmpty()){
+        if (!permissionList.isEmpty()) {
             String[] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(Register.this,permissions,1);
+            ActivityCompat.requestPermissions(Register.this, permissions, 1);
         }
     }
 
-    private void initView(){
+    private void initView() {
         accountIn = findViewById(R.id.account_in);
         passwordIn = findViewById(R.id.password_in);
         login = findViewById(R.id.login);
@@ -148,18 +147,18 @@ public class Register extends AppCompatActivity {
         designInput();
 
         //设置登录按钮的按击事件
-        login.setOnClickListener(new View.OnClickListener(){
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 currentAccount = accountIn.getText().toString();
                 currentPassword = passwordIn.getText().toString();
-                if("".equals(currentAccount)){
-                    Toast.makeText(getContext(),"请输入账号",Toast.LENGTH_SHORT).show();
+                if ("".equals(currentAccount)) {
+                    Toast.makeText(getContext(), "请输入账号", Toast.LENGTH_SHORT).show();
                     accountIn.requestFocus();//获取光标位置
-                }else if("".equals(currentPassword)){
-                    Toast.makeText(getContext(),"请输入密码",Toast.LENGTH_SHORT).show();
+                } else if ("".equals(currentPassword)) {
+                    Toast.makeText(getContext(), "请输入密码", Toast.LENGTH_SHORT).show();
                     passwordIn.requestFocus();//获取光标位置
-                }else{
+                } else {
                     hasUpdate = false;
                     queryRecord();
                 }
@@ -170,7 +169,6 @@ public class Register extends AppCompatActivity {
         useBeta.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                editor = pref.edit();
                 editor.putBoolean("isBeta", true);
                 editor.apply();
                 registerSuccess();
@@ -190,6 +188,7 @@ public class Register extends AppCompatActivity {
 
     private void initPref() {
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = pref.edit();
 
         //设置账号密码保存值
         boolean isRemember = pref.getBoolean("remember_password", false);
@@ -200,13 +199,17 @@ public class Register extends AppCompatActivity {
             passwordIn.setText(storePassword);
             rememberPass.setChecked(true);
         }
+
+        //设置设备密钥
         currentDeviceKey = pref.getString("deviceKey", "");
         if ("".equals(currentDeviceKey)) {
-            editor = pref.edit();
             currentDeviceKey = generateDeviceKey();
             editor.putString("deviceKey", currentDeviceKey);
             editor.apply();
         }
+
+        //设置是否曾登录的标志，若第一次登录需加载数据
+        hasLogged = pref.getBoolean("has_logged", false);
     }
 
     private void designInput() {
@@ -219,55 +222,82 @@ public class Register extends AppCompatActivity {
         passwordIn.setOnFocusChangeListener(onFocusChangeListener);
     }
 
-    private void queryRecord(){
+    private void queryRecord() {
         recordList = LitePal.findAll(Record.class);
-        if(!hasUpdate && Build.VERSION.SDK_INT>=21){
-            if(isNetSystemUsable(getContext())){
+        if (!hasUpdate && Build.VERSION.SDK_INT >= 21) {
+            if (isNetSystemUsable(getContext())) {
                 hasUpdate = true;//这句话应该在前面的
                 queryFromServer();
             }
         }
-        if(recordList.size() > 0){
+        if (recordList.size() > 0) {
             certify = false;
-            for(Record record:recordList){
-                if(currentAccount.equals(record.getAccount()) && currentPassword.equals(record.getPassword()) && currentDeviceKey
-                        .equals(record.getDeviceKey())){
-                    int year,month,day;
+            for (Record record : recordList) {
+                if (currentAccount.equals(record.getAccount()) && currentPassword.equals(record.getPassword())
+                        && currentDeviceKey
+                        .equals(record.getDeviceKey())) {
+                    int year, month, day;
                     year = record.getYear();
                     month = record.getMonth();
                     day = record.getDay();
-                    if(currentYear < year || (currentYear == year && currentMonth < month) || (currentYear == year && currentMonth == month && currentDay <= day)){
-                        editor = pref.edit();
-                        if(rememberPass.isChecked()){
-                            editor.putBoolean("remember_password",true);
-                            editor.putString("account",currentAccount);
-                            editor.putString("password",currentPassword);
-                        }else{
-                            editor.putBoolean("remember_password",false);
+                    if (currentYear < year || (currentYear == year && currentMonth < month) || (currentYear == year
+                            && currentMonth == month && currentDay <= day)) {
+                        if (rememberPass.isChecked()) {
+                            editor.putBoolean("remember_password", true);
+                            editor.putString("account", currentAccount);
+                            editor.putString("password", currentPassword);
+                        } else {
+                            editor.putBoolean("remember_password", false);
                         }
                         editor.putBoolean("isBeta", false);
                         editor.apply();
                         certify = true;
-                        registerSuccess();
+
+                        if (hasLogged) {
+                            registerSuccess();
+                        } else {
+                            editor.putBoolean("has_logged", true);
+                            editor.apply();
+                            loadMufflerData();
+                        }
+
                     }
                 }
             }
-            if (!certify){
-                Snackbar.make(findViewById(R.id.register_content),"该账户没有权限，请重新输入",Snackbar.LENGTH_SHORT).show();
+            if (!certify) {
+                Snackbar.make(findViewById(R.id.register_content), "该账户没有权限，请重新输入", Snackbar.LENGTH_SHORT).show();
                 passwordIn.setText("");
             }
-        }else{
+        } else {
             queryFromServer();
         }
     }
 
-    private void registerSuccess(){
-        Intent intent = new Intent(Register.this,ChooseOne.class);
+    private void registerSuccess() {
+        Intent intent = new Intent(Register.this, ChooseOne.class);
         startActivity(intent);
         finish();
     }
 
-    private void queryFromServer(){
+    private void loadMufflerData() {
+        progressDialog = new ProgressDialog(Register.this);
+        progressDialog.setTitle("正在导入消声器数据···");
+        progressDialog.setMessage("请稍等5-8分钟");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        successCount = 0;
+        requestData();
+        requestStick();
+    }
+
+    private void loadMufflerDataSuccess() {
+        if(successCount == 2){
+            progressDialog.dismiss();
+            registerSuccess();
+        }
+    }
+
+    private void queryFromServer() {
         String url = "https://www.weiningauto.xyz/myAccount1.json";//47.102.105.35
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
@@ -275,11 +305,13 @@ public class Register extends AppCompatActivity {
                 String responseText = response.body().string();
                 boolean result = false;
                 result = Utility.handleRecordResponse(responseText);
-                if(result){
+                if (result) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(hasUpdate == false)queryRecord();//防止刷新2次
+                            if (hasUpdate == false) {
+                                queryRecord();//防止刷新2次
+                            }
                         }
                     });
                 }
@@ -298,31 +330,29 @@ public class Register extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantRseults){
-        switch (requestCode){
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantRseults) {
+        switch (requestCode) {
             case 1:
-                if (grantRseults.length>0){
-                    for (int result : grantRseults){
-                        if(result != PackageManager.PERMISSION_GRANTED){
-                            Toast.makeText(this,"必须同意所有权限才能使用本程序",Toast.LENGTH_SHORT).show();
+                if (grantRseults.length > 0) {
+                    for (int result : grantRseults) {
+                        if (result != PackageManager.PERMISSION_GRANTED) {
+                            Toast.makeText(this, "必须同意所有权限才能使用本程序", Toast.LENGTH_SHORT).show();
                             finish();
                             return;
                         }
                     }
-                }else{
-                    Toast.makeText(this,"发生未知错误",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "发生未知错误", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 break;
             default:
-                 break;
+                break;
         }
     }
 
     /**
-     * 使用随机生成的十位字符串作为密钥
-     * 无法使用手机deviceId, 老是会变
-     * 无法获取IMEI号((International Mobile Equipment Identity,国际移动身份识别码)
+     * 使用随机生成的十位字符串作为密钥 无法使用手机deviceId, 老是会变 无法获取IMEI号((International Mobile Equipment Identity,国际移动身份识别码)
      * 原先使用的IMEI码在Android 10已不允许使用
      */
     private String generateDeviceKey() {
@@ -339,18 +369,18 @@ public class Register extends AppCompatActivity {
     private View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.account_in:
-                    if(hasFocus){
+                    if (hasFocus) {
                         accountIn.setHint("");
-                    }else{
+                    } else {
                         mySetHint(accountIn);
                     }
                     break;
                 case R.id.password_in:
-                    if(hasFocus){
+                    if (hasFocus) {
                         passwordIn.setHint("");
-                    }else{
+                    } else {
                         mySetHint(passwordIn);
                     }
                     break;
@@ -360,43 +390,34 @@ public class Register extends AppCompatActivity {
         }
     };
 
-    private void mySetHint(EditText et){
-        String hint=et.getTag().toString();
+    private void mySetHint(EditText et) {
+        String hint = et.getTag().toString();
         SpannableString newHint = new SpannableString(hint);//定义hint的值
-        AbsoluteSizeSpan newHintReal = new AbsoluteSizeSpan(19,true);//设置字体大小 true表示单位是sp
+        AbsoluteSizeSpan newHintReal = new AbsoluteSizeSpan(19, true);//设置字体大小 true表示单位是sp
         newHint.setSpan(newHintReal, 0, newHint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         et.setHint(new SpannedString(newHint));
     }
 
-    public static boolean isNetSystemUsable(Context context){
-        ConnectivityManager manager=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(manager==null) return false;
-        NetworkInfo networkInfo=manager.getActiveNetworkInfo();
+    public static boolean isNetSystemUsable(Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (manager == null) {
+            return false;
+        }
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isAvailable();
     }
 
-    private void requestData(){
+    private void requestData() {
         String url = "https://www.weiningauto.xyz/android_connect_data/get_all_data.php";
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getContext(), "请等待下载数据...", Toast.LENGTH_SHORT).show();
-            }
-        });
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d("requestData","has web");
                 String responseText = response.body().string();
-                Log.d("requestData",responseText);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), "数据下载成功，请等待导入...", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                Log.d("requestData",responseText);
-                Utility.handleDataAllResponse(responseText);
+//                Log.d("requestData", responseText);
+                if(Utility.handleDataAllResponse(responseText)){
+                    successCount += 1;
+                    loadMufflerDataSuccess();
+                }
             }
 
             @Override
@@ -411,15 +432,17 @@ public class Register extends AppCompatActivity {
         });
     }
 
-    private void requestStick(){
+    private void requestStick() {
         String url = "https://www.weiningauto.xyz/android_connect_dataStick/get_data_stick.php";
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d("Stick","has web");
                 String responseText = response.body().string();
-                Log.d("Stick",responseText);
-                Utility.handleDataStickResponse(responseText);
+                //Log.d("Stick", responseText);
+                if(Utility.handleDataStickResponse(responseText)){
+                    successCount += 1;
+                    loadMufflerDataSuccess();
+                }
             }
 
             @Override
