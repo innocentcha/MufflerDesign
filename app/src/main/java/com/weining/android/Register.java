@@ -11,7 +11,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.SpannedString;
@@ -22,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -62,7 +62,7 @@ public class Register extends AppCompatActivity {
 
     private Button login;
 
-    private Button showDeviceKey;
+    private TextView showDeviceKey;
 
     private int currentYear;
 
@@ -369,7 +369,6 @@ public class Register extends AppCompatActivity {
     }
 
     public static boolean isNetSystemUsable(Context context){
-        boolean isNetUsable=false;
         ConnectivityManager manager=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(manager==null) return false;
         NetworkInfo networkInfo=manager.getActiveNetworkInfo();

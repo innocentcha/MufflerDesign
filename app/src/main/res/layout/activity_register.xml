@@ -95,7 +95,7 @@
         android:id="@+id/login"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/button_circle_shape"
         android:text="登 录"
         android:textColor="#ffffff"
@@ -109,7 +109,7 @@
         android:id="@+id/remember_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="20dp"
         android:text="记住账号密码"
         android:textSize="15sp"
         android:textColor="#838080"
@@ -117,17 +117,43 @@
         app:layout_constraintStart_toStartOf="@+id/login"
         app:layout_constraintTop_toBottomOf="@+id/login" />
 
-    <Button
-        android:id="@+id/show_deviceKey"
-        android:layout_width="100dp"
+    <TextView
+        android:id="@+id/textApart"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
-        android:background="@drawable/button_circle_shape"
+        android:layout_marginBottom="52dp"
+        android:text="|"
+        android:textColor="@color/Pale"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/use_beta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="17dp"
+        android:clickable="true"
+        android:text="试用软件"
+        android:textColor="@color/Black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textApart"
+        app:layout_constraintEnd_toStartOf="@+id/textApart"
+        app:layout_constraintTop_toTopOf="@+id/textApart" />
+
+    <TextView
+        android:id="@+id/show_deviceKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:clickable="true"
         android:text="申请权限"
-        android:textColor="#ffffff"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/login"
-        app:layout_constraintTop_toBottomOf="@+id/remember_password" />
+        android:textColor="@color/Black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textApart"
+        app:layout_constraintStart_toEndOf="@+id/textApart"
+        app:layout_constraintTop_toTopOf="@+id/textApart" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
