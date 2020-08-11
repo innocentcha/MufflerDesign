@@ -16,7 +16,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.SpannedString;
 import android.text.style.AbsoluteSizeSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -208,8 +207,18 @@ public class Register extends AppCompatActivity {
             editor.apply();
         }
 
-        //设置是否曾登录的标志，若第一次登录需加载数据
-        hasLogged = pref.getBoolean("has_logged", false);
+        hasLoggedOn();
+    }
+
+    //设置是否曾登录的标志，若第一次登录需加载数据
+    private void hasLoggedOn() {
+        List<DataAll> myDataAll = LitePal.where("dataId = ?", "1").find(DataAll.class);
+        List<DataStick> myDataStick = LitePal.where("dataId = ?", "1").find(DataStick.class);
+        if (myDataAll.size() == 0 || myDataStick.size() == 0) {
+            hasLogged = false;
+        } else {
+            hasLogged = true;
+        }
     }
 
     private void designInput() {
@@ -256,8 +265,6 @@ public class Register extends AppCompatActivity {
                         if (hasLogged) {
                             registerSuccess();
                         } else {
-                            editor.putBoolean("has_logged", true);
-                            editor.apply();
                             loadMufflerData();
                         }
 

@@ -17,8 +17,11 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/release/app-release.apk" beforeDir="false" afterPath="$PROJECT_DIR$/app/release/app-release.apk" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/weining/android/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/weining/android/Register.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +29,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="HJS5T18A19040570" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_API_29" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -47,7 +50,7 @@
     </option>
   </component>
   <component name="GenerateSignedApkSettings">
-    <option name="KEY_STORE_PATH" value="$USER_HOME$/Desktop/weining.jks" />
+    <option name="KEY_STORE_PATH" value="$PROJECT_DIR$/../AndroidStudioProjects/weining.jks" />
     <option name="KEY_ALIAS" value="weining" />
     <option name="REMEMBER_PASSWORDS" value="true" />
     <option name="BUILD_TARGET_KEY" value="apk" />
@@ -266,7 +269,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -301,13 +306,13 @@
     <state x="781" y="344" key="AndroidProcessChooserDialog/56.23.1736.1097@56.23.1736.1097" timestamp="1596961257323" />
     <state x="784" y="344" key="AndroidProcessChooserDialog/61.23.1731.1097@61.23.1731.1097" timestamp="1596975626406" />
     <state x="787" y="344" key="AndroidProcessChooserDialog/66.23.1726.1097@66.23.1726.1097" timestamp="1596470597410" />
-    <state x="168" y="163" width="1527" height="857" key="DiffContextDialog" timestamp="1597075494511">
+    <state x="168" y="163" width="1527" height="857" key="DiffContextDialog" timestamp="1597108619975">
       <screen x="66" y="23" width="1726" height="1097" />
     </state>
     <state x="156" y="163" width="1536" height="857" key="DiffContextDialog/54.23.1738.1097@54.23.1738.1097" timestamp="1596878895966" />
     <state x="163" y="163" width="1530" height="857" key="DiffContextDialog/61.23.1731.1097@61.23.1731.1097" timestamp="1596982904269" />
     <state x="165" y="163" width="1529" height="857" key="DiffContextDialog/63.23.1729.1097@63.23.1729.1097" timestamp="1597072185376" />
-    <state x="168" y="163" width="1527" height="857" key="DiffContextDialog/66.23.1726.1097@66.23.1726.1097" timestamp="1597075494511" />
+    <state x="168" y="163" width="1527" height="857" key="DiffContextDialog/66.23.1726.1097@66.23.1726.1097" timestamp="1597108619975" />
     <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1591157131085">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
