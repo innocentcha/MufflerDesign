@@ -2,6 +2,7 @@ package com.weining.android.db;
 
 import org.litepal.crud.LitePalSupport;
 
+//帐号信息类
 public class Record extends LitePalSupport {
 
     private String account;

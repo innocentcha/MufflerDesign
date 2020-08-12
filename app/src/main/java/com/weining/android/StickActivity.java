@@ -74,10 +74,6 @@ public class StickActivity extends AppCompatActivity {
     private LinearLayout save5;
     private LinearLayout save6;
 
-    private int dataNum;//显示的点数
-    private int dataAllNum;
-
-
     //下拉刷新
     public SwipeRefreshLayout swipeRefresh;
     private List<Configure>  configureList = Arrays.asList( new Configure(1),new Configure(2),new Configure(3),new Configure(4),new Configure(5),new Configure(6));
@@ -134,12 +130,8 @@ public class StickActivity extends AppCompatActivity {
 
         initUI();
 
-        //recyclerView.setFocusableInTouchMode(false);
         StickAdapter adapter = new StickAdapter(configureList);
         recyclerView.setAdapter(adapter);
-
-        //ScrollView scrollView = (ScrollView) findViewById(R.id.graphic_layout);
-
 
         //设置刷新动作
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_stick);
@@ -411,11 +403,10 @@ public class StickActivity extends AppCompatActivity {
     }
 
     private void printCoordinate() {
-        //第一次绘图初始化内存图片，指定背景为白色
+        //第一次绘图初始化内存图片
         if (baseBitmap == null) {
             baseBitmap = Bitmap.createBitmap(screenWidth, 700, Bitmap.Config.ARGB_8888);
             canvas = new Canvas(baseBitmap);
-            //canvas.drawColor(Color.WHITE);//背景变白色会有点突兀
         }
 
         paint.setStrokeWidth(4);
@@ -445,8 +436,6 @@ public class StickActivity extends AppCompatActivity {
         paint.setStrokeWidth(2);
         //上横线
         canvas.drawLine(x1, y1, x2, y1, paint);
-        //右竖线
-        //canvas.drawLine(x2, y1, x2, y2, paint);
 
         paint.setStrokeWidth(1);
         //网格：横线
@@ -534,12 +523,6 @@ public class StickActivity extends AppCompatActivity {
         iv_canvas.setImageBitmap(baseBitmap);
     }
 
-//    //action按钮注册
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.searchbar, menu);
-//        return true;
-//    }
-
     //返回到登录界面事件和action按钮点击事件
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -562,10 +545,6 @@ public class StickActivity extends AppCompatActivity {
                         }).create();
                 alertDialog.show();
                 break;
-//            case R.id.search_bar:
-//                intent = new Intent(this, SearchActivity.class);
-//                startActivity(intent);
-//                break;
             default:
                 break;
         }
@@ -600,16 +579,11 @@ public class StickActivity extends AppCompatActivity {
         for(int i=0; i<=3000; i++){
             dataAdd[i] = 0;
         }
-        dataAllNum = 0;
         for(int i=1; i<=6; i++) {
             pref = getContext().getSharedPreferences("choosedId"+i, MODE_PRIVATE);
             int id = pref.getInt("id", 0);
             float correct = pref.getFloat("correct",0);
             if(id == 0) continue;
-            Log.d("wangting corr",String.valueOf(correct));
-            //SharedPreferences.Editor editor = pref.edit();
-            //editor.clear();
-            Log.d("myIdqqqis", String.valueOf(id));
             List<DataStick> myDataStick = LitePal.where("dataId = ?", id + "").find(DataStick.class);
             DataStick dataResult = myDataStick.get(0);
             List<Float> tlList = dataResult.getTlList();
@@ -620,7 +594,6 @@ public class StickActivity extends AppCompatActivity {
             id = id + CountUtil.StickIdStep;
             List<DataStick> myDataStickExtra = LitePal.where("dataId = ?", id + "").find(DataStick.class);
             DataStick dataResultExtra = myDataStickExtra.get(0);
-            List<Float> tlListExtra = dataResultExtra.getTlList();
             for (int j = CountUtil.tlNum; j < CountUtil.tlStickNum; j++) {
                 data[j] = tlList.get(j - CountUtil.tlNum);
             }
@@ -628,7 +601,6 @@ public class StickActivity extends AppCompatActivity {
             correctedData = new double[3001];
             for(int j=0; j<=1180; j++) correctedData[i+20] = data[i];
             int newIndex=0;
-            int maxIndex = 0;
             if(correct>1.0){
                 for(int j=1200; j>=20; j--){//算法问题 需要倒着换！
                     newIndex= (int) (correct*j);
@@ -650,11 +622,7 @@ public class StickActivity extends AppCompatActivity {
                 }
             }
 
-//                dataNum = (int)(correct*780);
-//                if(dataNum>780) dataNum = 780;
             for(int j=0; j<=3000; j++) dataAdd[j] += correctedData[j];
-//                if(dataAllNum <dataNum) dataAllNum = dataNum;
-//                Log.d("mycolor is",String.valueOf(i));
             if (i == 1)paint.setColor(0xFF4A7EBB);
             else if (i == 2)paint.setColor(0xFFBE4B48);
             else if (i == 3)paint.setColor(0xFF98B954);
@@ -666,7 +634,6 @@ public class StickActivity extends AppCompatActivity {
     }
 
     public void showAddAction(){
-//        dataNum = dataAllNum;
         for (int i=0; i<=3000; i++){
             correctedData[i] = dataAdd[i];
         }
@@ -675,13 +642,14 @@ public class StickActivity extends AppCompatActivity {
         printGraphic();
     }
 
-
-//    开槽面积
-//    消声容积
-//    温度
-//    峰值频率
-//    单边插入长度
-//    插入方式
+    /*
+     * area: 开槽面积
+     * devol: 消声容积
+     * degree: 温度
+     * peek: 峰值频率
+     * length: 单边插入长度
+     * typeText: 插入方式
+     */
     private void clearSave(){
         for(int i=0; i<=6; i++){
             SharedPreferences.Editor editor = getContext().getSharedPreferences("savedStick"+i,MODE_PRIVATE).edit();
@@ -744,22 +712,16 @@ public class StickActivity extends AppCompatActivity {
          */
         @Override
         public boolean requestChildRectangleOnScreen(RecyclerView parent, View child, Rect rect, boolean immediate) {
-
-//这里的child 是整个HeadView 而不是某个具体的editText
-//            LogUtil.e("requestChildRectangleOnScreen()====> chlild==" + child.getId() + "parent==" + parent.getId());
             return false;
         }
 
         @Override
         public boolean requestChildRectangleOnScreen(RecyclerView parent, View child, Rect rect, boolean immediate, boolean focusedChildVisible) {
-
-//这里的child 是整个HeadView 而不是某个具体的editText
-//            LogUtil.e("requestChildRectangleOnScreen( focusedChildVisible=)====> chlild==" + child.getId() + "parent==" + parent.getId());
             return false;
         }
     }
 
-    /*获取两指之间的距离*/
+    //获取两指之间的距离
     private float getDistance(MotionEvent event){
         float x = event.getX(1) - event.getX(0);
         float y = event.getY(1) - event.getY(0);

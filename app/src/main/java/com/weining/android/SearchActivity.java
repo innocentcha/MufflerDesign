@@ -91,11 +91,6 @@ public class SearchActivity extends AppCompatActivity {
     SearchConfigureAdapter adapter;
     List<DataAll>  myDataAll;
 
-    private int mode = 0;
-    private float breRealXMax;
-    private float breRealXMin;
-    private float breRealYMax;
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,8 +133,6 @@ public class SearchActivity extends AppCompatActivity {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                clearCanvas();
-//                clearShared();
                 Intent swipeIntent = new Intent(getContext(),SearchActivity.class);
                 startActivity(swipeIntent);
                 finish();
@@ -150,7 +143,6 @@ public class SearchActivity extends AppCompatActivity {
         //获取屏幕的长宽
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         screenWidth = wm.getDefaultDisplay().getWidth();
-        //screenHeight = wm.getDefaultDisplay().getHeight();
 
         //初始化默认画笔，线宽3，颜色黑色
         paint = new Paint();
@@ -202,7 +194,6 @@ public class SearchActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 typeText = searchType.getItemAtPosition(i).toString();
                 typeChoose = (int)searchType.getItemIdAtPosition(i);
-//                Log.d("myChoose type",String.valueOf(typeChoose));
 
                 String[] size,axial;
 
@@ -220,7 +211,6 @@ public class SearchActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         sizeText = searchSize.getItemAtPosition(i).toString();
                         sizeChoose = (int) searchSize.getItemIdAtPosition(i);
-//                        Log.d("myChoose size",String.valueOf(sizeChoose));
 
                         String[] cavity;
                         if(sizeText == "D35" && typeText == "直管圆周式"){
@@ -256,7 +246,6 @@ public class SearchActivity extends AppCompatActivity {
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 cavityText = searchCavity.getItemAtPosition(i).toString();
                                 cavityChoose = (int) searchCavity.getItemIdAtPosition(i);
-//                                Log.d("myChoose cavity",String.valueOf(cavityChoose));
                             }
 
                             @Override
@@ -294,7 +283,6 @@ public class SearchActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         circularText = searchCircular.getItemAtPosition(i).toString();
                         circularChoose = (int) searchCircular.getItemIdAtPosition(i);
-//                        Log.d("myChoose circular",String.valueOf(circularChoose));
                     }
 
                     @Override
@@ -326,8 +314,6 @@ public class SearchActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 axialText = searchAxial.getItemAtPosition(i).toString();
                 axialChoose = (int) searchAxial.getItemIdAtPosition(i);
-//                Log.d("myChoose axial",String.valueOf(axialChoose));
-
             }
 
             @Override
@@ -338,7 +324,7 @@ public class SearchActivity extends AppCompatActivity {
 
         });
 
-        //图片的名字反了  懒得改了..
+        //图片的名字反了，懒得改了..
         searchBt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -492,12 +478,6 @@ public class SearchActivity extends AppCompatActivity {
                     showAllAction();
                     adapter.notifyDataSetChanged();
 
-
-//                    Log.d("wttttt1",String.valueOf(typeChoose+1));
-//                    Log.d("wttttt2",String.valueOf(sizeChoose+1));
-//                    Log.d("wttttt3",String.valueOf(circularChoose));
-//                    Log.d("wttttt4",String.valueOf(axialChoose));
-//                    Log.d("wttttt5",String.valueOf(cavityChoose));
                 }
 
             }
@@ -560,11 +540,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void printCoordinate() {
-        //第一次绘图初始化内存图片，指定背景为白色
+        //第一次绘图初始化内存图片
         if (baseBitmap == null) {
             baseBitmap = Bitmap.createBitmap(screenWidth, 700, Bitmap.Config.ARGB_8888);
             canvas = new Canvas(baseBitmap);
-            //canvas.drawColor(Color.WHITE);//背景变白色会有点突兀
         }
 
         paint.setStrokeWidth(4);
@@ -594,8 +573,6 @@ public class SearchActivity extends AppCompatActivity {
         paint.setStrokeWidth(2);
         //上横线
         canvas.drawLine(x1, y1, x2, y1, paint);
-        //右竖线
-//        canvas.drawLine(x2, y1, x2, y2, paint);
 
         paint.setStrokeWidth(1);
         //网格：横线
@@ -674,16 +651,10 @@ public class SearchActivity extends AppCompatActivity {
         iv_canvas.setImageBitmap(baseBitmap);
     }
 
-    //action按钮注册
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.searchbar, menu);
-//        return true;
-//    }
 
     //返回到登录界面事件和action按钮点击事件
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        Intent intent;
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -739,7 +710,7 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    /*获取两指之间的距离*/
+    //获取两指之间的距离
     private float getDistance(MotionEvent event){
         float x = event.getX(1) - event.getX(0);
         float y = event.getY(1) - event.getY(0);

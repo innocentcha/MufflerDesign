@@ -58,8 +58,6 @@ public class BetaActivity extends AppCompatActivity {
     //坐标图位置
     int x1, x2, y1, y2;
 
-    //最大值影响坐标
-//    double max;
     //纵坐标刻度
     int maxTL;
     int space;
@@ -422,9 +420,6 @@ public class BetaActivity extends AppCompatActivity {
             c0=n*sectionTrous/(tw/1000+0.8*Math.sqrt(sectionTrous));
             fp=(int)((0.5*c/PI)*Math.sqrt(c0/V*1000));
             sectionConduit = D*D*PI/4000000;
-            Log.d("deta test c",String.valueOf(c));
-            Log.d("deta test c0",String.valueOf(c0));
-            Log.d("deta test fp",String.valueOf(fp));
             for (int i = minHor; i <= maxHor; i++) {
                 f = i;
                 in = 2*PI*f*1.2/c0-1.2*c*c/(2*PI*f*V/1000);
@@ -443,12 +438,6 @@ public class BetaActivity extends AppCompatActivity {
 
         iv_canvas.setImageBitmap(baseBitmap);
     }
-
-    //action按钮注册
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.simplemenu, menu);
-//        return true;
-//    }
 
     //返回到登录界面事件和action按钮点击事件
     @Override

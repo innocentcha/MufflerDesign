@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.litepal.crud.LitePalSupport;
 
+//插入管消声器类
 public class DataStick extends LitePalSupport {
 
     private int dataId;

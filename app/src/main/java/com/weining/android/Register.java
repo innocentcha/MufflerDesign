@@ -107,12 +107,7 @@ public class Register extends AppCompatActivity {
 
         initPref();
 
-        //获取系统时间
-        Calendar calendar = Calendar.getInstance();
-        currentYear = calendar.get(Calendar.YEAR);
-        currentMonth = calendar.get(Calendar.MONTH) + 1;
-        currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-
+        getSystemTime();
     }
 
     private void requestPermissions() {
@@ -221,21 +216,30 @@ public class Register extends AppCompatActivity {
         }
     }
 
+    //设置账号密码输入框的hint，其中Tag为hint的值
     private void designInput() {
-        //设置账号密码输入框的hint
-        accountIn.setTag("账号");//预先设置Tag作为hint的值
-        mySetHint(accountIn);
+        accountIn.setTag("账号");
+        setHint(accountIn);
         passwordIn.setTag("密码");
-        mySetHint(passwordIn);
+        setHint(passwordIn);
         accountIn.setOnFocusChangeListener(onFocusChangeListener);
         passwordIn.setOnFocusChangeListener(onFocusChangeListener);
     }
 
+    //获取系统时间
+    private void getSystemTime(){
+        Calendar calendar = Calendar.getInstance();
+        currentYear = calendar.get(Calendar.YEAR);
+        currentMonth = calendar.get(Calendar.MONTH) + 1;
+        currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    //比较输入的帐号信息和服务器端的帐号信息
     private void queryRecord() {
         recordList = LitePal.findAll(Record.class);
         if (!hasUpdate && Build.VERSION.SDK_INT >= 21) {
             if (isNetSystemUsable(getContext())) {
-                hasUpdate = true;//这句话应该在前面的
+                hasUpdate = true;
                 queryFromServer();
             }
         }
@@ -280,12 +284,14 @@ public class Register extends AppCompatActivity {
         }
     }
 
+    //登录成功，进入功能选择界面
     private void registerSuccess() {
         Intent intent = new Intent(Register.this, ChooseOne.class);
         startActivity(intent);
         finish();
     }
 
+    //加载动画
     private void loadMufflerData() {
         progressDialog = new ProgressDialog(Register.this);
         progressDialog.setTitle("正在导入消声器数据···");
@@ -297,6 +303,7 @@ public class Register extends AppCompatActivity {
         requestStick();
     }
 
+    //数据导入成功，回调登录成功方法
     private void loadMufflerDataSuccess() {
         if(successCount == 2){
             progressDialog.dismiss();
@@ -304,15 +311,16 @@ public class Register extends AppCompatActivity {
         }
     }
 
+    //从服务器查询帐号密码，服务器ip地址为47.102.105.35
     private void queryFromServer() {
-        String url = "https://www.weiningauto.xyz/myAccount1.json";//47.102.105.35
+        String url = "https://www.weiningauto.xyz/myAccount1.json";
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseText = response.body().string();
-                boolean result = false;
-                result = Utility.handleRecordResponse(responseText);
-                if (result) {
+                boolean handleSuccess = false;
+                handleSuccess = Utility.handleRecordResponse(responseText);
+                if (handleSuccess) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -359,7 +367,9 @@ public class Register extends AppCompatActivity {
     }
 
     /**
-     * 使用随机生成的十位字符串作为密钥 无法使用手机deviceId, 老是会变 无法获取IMEI号((International Mobile Equipment Identity,国际移动身份识别码)
+     * 使用随机生成的十位字符串作为密钥
+     * 无法使用手机deviceId, 老是会变
+     * 无法获取IMEI号((International Mobile Equipment Identity,国际移动身份识别码)
      * 原先使用的IMEI码在Android 10已不允许使用
      */
     private String generateDeviceKey() {
@@ -373,6 +383,7 @@ public class Register extends AppCompatActivity {
         return randomKey.toString();
     }
 
+    //UI相关，输入框的聚焦事件
     private View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
@@ -381,14 +392,14 @@ public class Register extends AppCompatActivity {
                     if (hasFocus) {
                         accountIn.setHint("");
                     } else {
-                        mySetHint(accountIn);
+                        setHint(accountIn);
                     }
                     break;
                 case R.id.password_in:
                     if (hasFocus) {
                         passwordIn.setHint("");
                     } else {
-                        mySetHint(passwordIn);
+                        setHint(passwordIn);
                     }
                     break;
                 default:
@@ -397,14 +408,18 @@ public class Register extends AppCompatActivity {
         }
     };
 
-    private void mySetHint(EditText et) {
+    //设置hint的格式
+    private void setHint(EditText et) {
         String hint = et.getTag().toString();
-        SpannableString newHint = new SpannableString(hint);//定义hint的值
-        AbsoluteSizeSpan newHintReal = new AbsoluteSizeSpan(19, true);//设置字体大小 true表示单位是sp
+        //定义hint的值
+        SpannableString newHint = new SpannableString(hint);
+        //设置字体大小 true表示单位是sp
+        AbsoluteSizeSpan newHintReal = new AbsoluteSizeSpan(19, true);
         newHint.setSpan(newHintReal, 0, newHint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         et.setHint(new SpannedString(newHint));
     }
 
+    //确认是否联网状态
     public static boolean isNetSystemUsable(Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (manager == null) {
@@ -414,13 +429,14 @@ public class Register extends AppCompatActivity {
         return networkInfo != null && networkInfo.isAvailable();
     }
 
+    //请求穿孔消声器数据
     private void requestData() {
         String url = "https://www.weiningauto.xyz/android_connect_data/get_all_data.php";
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseText = response.body().string();
-//                Log.d("requestData", responseText);
+                //Log.d("requestData", responseText);
                 if(Utility.handleDataAllResponse(responseText)){
                     successCount += 1;
                     loadMufflerDataSuccess();
@@ -439,6 +455,7 @@ public class Register extends AppCompatActivity {
         });
     }
 
+    //请求插入管消声器数据
     private void requestStick() {
         String url = "https://www.weiningauto.xyz/android_connect_dataStick/get_data_stick.php";
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {

@@ -129,21 +129,14 @@ public class GraphicActivity extends AppCompatActivity {
         clearSave();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//        recyclerView.setLayoutManager(new FoucsLinearLayoutManager(getContext()));
         LinearLayoutManager layoutManager = new FoucsLinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
 
         initUI();
 
-        //recyclerView.setFocusableInTouchMode(false);
         ConfigureAdapter adapter = new ConfigureAdapter(configureList);
         recyclerView.setAdapter(adapter);
-
-        //ScrollView scrollView = (ScrollView) findViewById(R.id.graphic_layout);
-
 
         //设置刷新动作
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
@@ -151,8 +144,6 @@ public class GraphicActivity extends AppCompatActivity {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                clearCanvas();
-//                clearShared();
                 Intent swipeIntent = new Intent(getContext(),GraphicActivity.class);
                 startActivity(swipeIntent);
                 finish();
@@ -177,6 +168,7 @@ public class GraphicActivity extends AppCompatActivity {
         clearShared();
 
 
+        //手势动作调整图像坐标轴
         iv_canvas.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public  boolean onTouch(View v, MotionEvent event){
@@ -240,7 +232,6 @@ public class GraphicActivity extends AppCompatActivity {
         });
 
     }
-
 
     private void  initUI(){
         space = 1000;
@@ -641,11 +632,7 @@ public class GraphicActivity extends AppCompatActivity {
                     }
                 }
 
-//                dataNum = (int)(correct*780);
-//                if(dataNum>780) dataNum = 780;
                 for(int j=0; j<=2000; j++) dataAdd[j] += correctedData[j];
-//                if(dataAllNum <dataNum) dataAllNum = dataNum;
-//                Log.d("mycolor is",String.valueOf(i));
                 if (i == 1)paint.setColor(0xFF4A7EBB);
                 else if (i == 2)paint.setColor(0xFFBE4B48);
                 else if (i == 3)paint.setColor(0xFF98B954);
@@ -657,7 +644,6 @@ public class GraphicActivity extends AppCompatActivity {
     }
 
     public void showAddAction(){
-//        dataNum = dataAllNum;
         for (int i=0; i<=2000; i++){
             correctedData[i] = dataAdd[i];
         }
@@ -794,21 +780,23 @@ public class GraphicActivity extends AppCompatActivity {
         @Override
         public boolean requestChildRectangleOnScreen(RecyclerView parent, View child, Rect rect, boolean immediate) {
 
-//这里的child 是整个HeadView 而不是某个具体的editText
-//            LogUtil.e("requestChildRectangleOnScreen()====> chlild==" + child.getId() + "parent==" + parent.getId());
+            //这里的child 是整个HeadView 而不是某个具体的editText
+            //LogUtil.e("requestChildRectangleOnScreen()====> chlild==" + child.getId() + "parent==" + parent.getId());
             return false;
         }
 
         @Override
         public boolean requestChildRectangleOnScreen(RecyclerView parent, View child, Rect rect, boolean immediate, boolean focusedChildVisible) {
 
-//这里的child 是整个HeadView 而不是某个具体的editText
-//            LogUtil.e("requestChildRectangleOnScreen( focusedChildVisible=)====> chlild==" + child.getId() + "parent==" + parent.getId());
+            //这里的child 是整个HeadView 而不是某个具体的editText
+            //LogUtil.e("requestChildRectangleOnScreen( focusedChildVisible=)====> chlild==" + child.getId() + "parent==" + parent.getId());
             return false;
         }
     }
 
-    /*获取两指之间的距离*/
+    /*获取两指之间的距离
+     * TODO 自定义view，把滑动事件view内部的东西
+     */
     private float getDistance(MotionEvent event){
         float x = event.getX(1) - event.getX(0);
         float y = event.getY(1) - event.getY(0);

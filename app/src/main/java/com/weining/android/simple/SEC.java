@@ -3,43 +3,29 @@ package com.weining.android.simple;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.os.Build;
-import android.preference.PreferenceManager;
-//import android.support.v4.widget.SwipeRefreshLayout;
-//import android.support.v7.app.ActionBar;
-//import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-//import android.support.v7.widget.Toolbar;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.weining.android.ChooseOne;
-import com.weining.android.GraphicActivity;
 import com.weining.android.R;
 
 import static org.litepal.LitePalApplication.getContext;
@@ -129,8 +115,6 @@ public class SEC extends AppCompatActivity {
 
         //绘制坐标
         printCoordinate();
-
-        //printGraphic();
 
         iv_canvas.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -525,7 +509,7 @@ public class SEC extends AppCompatActivity {
         else return 37;
     }
 
-    /*获取两指之间的距离*/
+    //获取两指之间的距离
     private float getDistance(MotionEvent event){
         float x = event.getX(1) - event.getX(0);
         float y = event.getY(1) - event.getY(0);
