@@ -313,7 +313,7 @@ public class Register extends AppCompatActivity {
 
     //从服务器查询帐号密码，服务器ip地址为47.102.105.35
     private void queryFromServer() {
-        String url = "https://www.weiningauto.xyz/myAccount1.json";
+        String url = ServerInfo.accountUrl;
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -431,7 +431,7 @@ public class Register extends AppCompatActivity {
 
     //请求穿孔消声器数据
     private void requestData() {
-        String url = "https://www.weiningauto.xyz/android_connect_data/get_all_data.php";
+        String url = ServerInfo.allDataUrl;
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -457,7 +457,7 @@ public class Register extends AppCompatActivity {
 
     //请求插入管消声器数据
     private void requestStick() {
-        String url = "https://www.weiningauto.xyz/android_connect_dataStick/get_data_stick.php";
+        String url = ServerInfo.stickDataUrl;
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
