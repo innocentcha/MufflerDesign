@@ -311,7 +311,7 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    //从服务器查询帐号密码，服务器ip地址为47.102.105.35
+    //从服务器查询帐号密码
     private void queryFromServer() {
         String url = ServerInfo.accountUrl;
         HttpUtil.sendOkHttpRequest(url, new okhttp3.Callback() {
