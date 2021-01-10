@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="180dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/search_configure_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="17sp"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/search_configure_type"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="17sp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        />
+
+    <TextView
+        android:id="@+id/search_configure_size"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="17sp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        />
+
+    <TextView
+        android:id="@+id/search_configure_circular"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="17sp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        />
+
+    <TextView
+        android:id="@+id/search_configure_axial"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="17sp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        />
+
+    <TextView
+        android:id="@+id/search_configure_cavity"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textSize="17sp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        />
+
+    <TextView
+        android:id="@+id/search_configure_vol"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        />
+
+    <TextView
+        android:id="@+id/search_configure_span"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        />
+
+    <TextView
+        android:id="@+id/search_configure_count"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        />
+
+    <TextView
+        android:id="@+id/search_configure_peek"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        />
+
+    <ImageView
+        android:id="@+id/search_configure_axial_pic"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:scaleType="fitCenter"
+        android:gravity="center" />
+
+    <ImageView
+        android:id="@+id/search_configure_circular_pic"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:scaleType="fitCenter"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/search_configure_bt"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:gravity="center" />
+
+</LinearLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_SEC"
+        android:title="简单扩张腔"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_SETEC"
+        android:title="单边插入管扩张腔"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_DETEC"
+        android:title="双边插入管扩张腔"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_HR"
+        android:title="Helmholz谐振腔"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_QWT"
+        android:title="1/4 波长管"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_simple_end"
+        android:title="退出"
+        app:showAsAction="never"/>
+</menu>

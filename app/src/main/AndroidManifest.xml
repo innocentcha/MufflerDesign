@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.weining.android">
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name="org.litepal.LitePalApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/logo"
+        android:label="消声器设计"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".BetaActivity"></activity>
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".simple.QWT" />
+        <activity android:name=".simple.HR" />
+        <activity android:name=".simple.DETEC" />
+        <activity android:name=".simple.SETEC" />
+        <activity android:name=".simple.SEC" />
+        <activity android:name=".SimpleChoose" />
+        <activity android:name=".util.SimpleChoose" />
+        <activity android:name=".ChooseOne" />
+        <activity android:name=".GraphicActivity" />
+        <activity android:name=".StickActivity" />
+        <activity android:name=".Register" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

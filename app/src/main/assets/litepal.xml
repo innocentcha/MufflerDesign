@@ -1,0 +1,13 @@
+<litepal>
+    <dbname value="WeiNing" />
+
+    <version value="9" />
+
+    <list>
+        <mapping class="com.weining.android.db.Record"/>
+        <mapping class="com.weining.android.db.DataAll"/>
+        <mapping class="com.weining.android.db.DataStick"/>
+        <mapping class="com.weining.android.db.persons"/>
+    </list>
+
+</litepal>
