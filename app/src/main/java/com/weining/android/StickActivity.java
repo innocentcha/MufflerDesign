@@ -594,6 +594,7 @@ public class StickActivity extends AppCompatActivity {
             id = id + CountUtil.StickIdStep;
             List<DataStick> myDataStickExtra = LitePal.where("dataId = ?", id + "").find(DataStick.class);
             DataStick dataResultExtra = myDataStickExtra.get(0);
+            tlList = dataResultExtra.getTlList();
             for (int j = CountUtil.tlNum; j < CountUtil.tlStickNum; j++) {
                 data[j] = tlList.get(j - CountUtil.tlNum);
             }

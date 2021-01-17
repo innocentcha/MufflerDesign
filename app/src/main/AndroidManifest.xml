@@ -16,11 +16,13 @@
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="消声器设计"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BetaActivity"></activity>
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".BetaActivity" />
+        <activity
+            android:name=".SearchActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".simple.QWT" />
         <activity android:name=".simple.HR" />
         <activity android:name=".simple.DETEC" />
@@ -28,8 +30,12 @@
         <activity android:name=".simple.SEC" />
         <activity android:name=".SimpleChoose" />
         <activity android:name=".ChooseOne" />
-        <activity android:name=".GraphicActivity" />
-        <activity android:name=".StickActivity" />
+        <activity
+            android:name=".GraphicActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".StickActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".Register" />
         <activity android:name=".MainActivity">
             <intent-filter>

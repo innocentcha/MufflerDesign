@@ -325,6 +325,7 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         //图片的名字反了，懒得改了..
+        //应该自己做个映射对应
         searchBt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -477,7 +478,9 @@ public class SearchActivity extends AppCompatActivity {
                     configureList.clear();
                     showAllAction();
                     adapter.notifyDataSetChanged();
-
+                    if (myDataAll == null || myDataAll.size() == 0) {
+                        Toast.makeText(getContext(),"未找到符合条件的消声器",Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }

@@ -318,8 +318,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseText = response.body().string();
-                boolean handleSuccess = false;
-                handleSuccess = Utility.handleRecordResponse(responseText);
+                boolean handleSuccess = Utility.handleRecordResponse(responseText);
                 if (handleSuccess) {
                     runOnUiThread(new Runnable() {
                         @Override

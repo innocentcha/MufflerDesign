@@ -214,8 +214,7 @@ public class StickAdapter extends RecyclerView.Adapter<StickAdapter.ViewHolder> 
                 holder.configurePeek.setText(String.valueOf(dataResult.getMaxF()));
                 if(TextUtils.isEmpty(holder.configureArea.getText()) ||  TextUtils.isEmpty(holder.configureDevol.getText())|| TextUtils.isEmpty(holder.configureDegree.getText())){
                     Toast.makeText(getContext(),"开槽面积、消声容积、温度均不能为空",Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else{
                     double nowArea = Double.valueOf(holder.configureArea.getText().toString());
                     double nowDegree = Double.valueOf(holder.configureDegree.getText().toString());
                     float nowVol =  Float.valueOf(holder.configureDevol.getText().toString());
