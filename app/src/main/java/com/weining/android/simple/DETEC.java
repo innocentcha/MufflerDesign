@@ -276,7 +276,7 @@ public class DETEC extends AppCompatActivity {
                 S_T2=DETEC_T2.getText().toString();
                 isFilled[1] = false;
                 if(!S_d2.equals("") && !S_D2.equals("") && !S_L2.equals("") && !S_Li2.equals("") && !S_Lo2.equals("") && !S_tw2.equals("")&& !S_T2.equals("") ){
-                    isFilled[0] = true;
+                    isFilled[1] = true;
                     d=Double.valueOf(S_d2).doubleValue();
                     D=Double.valueOf(S_D2).doubleValue();
                     L=Double.valueOf(S_L2).doubleValue();
